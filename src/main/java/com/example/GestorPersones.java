@@ -2,9 +2,16 @@ package com.example;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.Scanner;
 
-public class GestorPersones {
+public class GestorPersones implements Serializable {
+    /**
+     * Constructor buit (JavaBean)
+     */
+    GestorPersones() {
+    };
+
     Boolean programRunning = true;
     Scanner lector = new Scanner(System.in);
     UsaPersones usaPersones = new UsaPersones();
@@ -19,11 +26,19 @@ public class GestorPersones {
         gestorPersones.start();
     }
 
+    /**
+     * Crida a connectDatabase i després a menu.
+     * 
+     */
     void start() {
         usaPersones.connectDatabase();
         menu();
     }
 
+    /**
+     * Llegeix l'ordre introduida per teclat i crida a les corresponents funcions.
+     * 
+     */
     void menu() {
         while (programRunning) {
             String ordre = preguntarString("[persones]");
@@ -75,6 +90,10 @@ public class GestorPersones {
         }
     }
 
+    /**
+     * Mostra les ordres disponibles del programa.
+     * 
+     */
     void help() {
         System.out.println("-------");
         System.out.println("> help              ajuda");
@@ -90,6 +109,8 @@ public class GestorPersones {
     }
 
     /**
+     * Carregar multiples documents des d'un arxiu js
+     * 
      * @throws FileNotFoundException
      */
     void carregarllista() throws FileNotFoundException {
@@ -98,16 +119,28 @@ public class GestorPersones {
         usaPersones.carregarLlistaDePersones(arxiu);
     }
 
+    /**
+     * mostra totes les persones de la col·lecció
+     * 
+     */
     void llista() {
         usaPersones.mostrarTotesLesPersones();
     }
 
+    /**
+     * demana el rang d'edats i mostra les persones en aquestes edats
+     * 
+     */
     void llistaedat() {
         int min = preguntarInt("Edat mínima:");
         int max = preguntarInt("Edat màxima:");
         usaPersones.mostrarPersonesAmbEdat(min, max);
     }
 
+    /**
+     * demana el nom de la persona i mostra l'edat.'
+     * 
+     */
     void edat() {
         String nom = preguntarString("Nom de la persona de qui vols saber l'edat:");
         usaPersones.mostrarEdatDePersonesAmb("nom", nom);
@@ -123,6 +156,9 @@ public class GestorPersones {
         return numero % 2 == 0;
     }
 
+    /**
+     * pregunta el nom de la persona i la nova edat que li vols assignar
+     */
     void editaredat() {
         String nom = preguntarString("Nom de la persona de qui vols editar l'edat:");
         if (usaPersones.exiteixUnaPersonaAmbNom(nom)) {
@@ -134,6 +170,9 @@ public class GestorPersones {
         }
     }
 
+    /**
+     * pregunta el nom de la persona i et mostra els detalls de l'adreça
+     */
     void adreça() {
         String nom = preguntarString("Nom de la persona de qui vols saber l'adreça:");
         usaPersones.mostrarAdreçaDePersonesAmb("nom", nom);
@@ -159,16 +198,26 @@ public class GestorPersones {
         return resposta;
     }
 
+    /**
+     * et pregunata la professió i et mostra les persones que tenen aquesta
+     * professió
+     */
     void llistaprofessio() {
         String professio = preguntarString("De quina professió vols veure la llista de persones? ");
         usaPersones.mostrarPersonesAmb("professió", professio);
     }
 
+    /**
+     * et pregunata la població i et mostra les persones que tenen aquesta població
+     */
     void llistapoblacio() {
         String poblacio = preguntarString("De quina població vols veure la llista de persones? ");
         usaPersones.mostrarPersonesAmb("adreça.població", poblacio);
     }
 
+    /**
+     * et pregunta el nom de la persona i borra les persones que es diguin així
+     */
     void borrar() {
         String nom = preguntarString("Nom de la persona que vols borrar:");
         if (usaPersones.exiteixUnaPersonaAmbNom(nom)) {
@@ -179,6 +228,9 @@ public class GestorPersones {
 
     }
 
+    /**
+     * et pregunta tots els detalls de la persona i l'afegeix a la col·lecció
+     */
     void afegir() {
         String nom = preguntarString("Nom i cognoms:");
         if (nom == "") {
@@ -197,5 +249,49 @@ public class GestorPersones {
         Persona persona = new Persona(nom, edat, professio, sou, adreça, codiPostal);
         persona.setAdreça(adreça);
         usaPersones.inserirUnaPersona(persona);
+    }
+
+    /**
+     * Getters i setters
+     * 
+     */
+
+    public Boolean getProgramRunning() {
+        return programRunning;
+    }
+
+    /**
+     * @param programRunning
+     */
+    public void setProgramRunning(Boolean programRunning) {
+        this.programRunning = programRunning;
+    }
+
+    /**
+     * @return Scanner lector
+     */
+    public Scanner getLector() {
+        return lector;
+    }
+
+    /**
+     * @param lector
+     */
+    public void setLector(Scanner lector) {
+        this.lector = lector;
+    }
+
+    /**
+     * @param usaPersones
+     */
+    public void setUsaPersones(UsaPersones usaPersones) {
+        this.usaPersones = usaPersones;
+    }
+
+    /**
+     * @return UsaPersones
+     */
+    public UsaPersones getUsaPersones() {
+        return usaPersones;
     }
 }
